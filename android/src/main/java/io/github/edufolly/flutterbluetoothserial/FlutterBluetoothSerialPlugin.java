@@ -940,18 +940,22 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                             return;
                         }
 
-                        List<Map<String, Object>> list = new ArrayList<>();
-                        for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
-                            Map<String, Object> entry = new HashMap<>();
-                            entry.put("address", device.getAddress());
-                            entry.put("name", device.getName());
-                            entry.put("type", device.getType());
-                            entry.put("isConnected", checkIsDeviceConnected(device));
-                            entry.put("bondState", BluetoothDevice.BOND_BONDED);
-                            list.add(entry);
-                        }
+                        try {
+                            List<Map<String, Object>> list = new ArrayList<>();
+                            for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
+                                Map<String, Object> entry = new HashMap<>();
+                                entry.put("address", device.getAddress());
+                                entry.put("name", device.getName());
+                                entry.put("type", device.getType());
+                                entry.put("isConnected", checkIsDeviceConnected(device));
+                                entry.put("bondState", BluetoothDevice.BOND_BONDED);
+                                list.add(entry);
+                            }
 
-                        result.success(list);
+                            result.success(list);
+                        } catch (SecurityException e) {
+                            e.printStackTrace();
+                        }
                     });
                     break;
 

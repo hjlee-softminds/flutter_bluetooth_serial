@@ -275,13 +275,17 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         final int deviceRSSI = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
 
                         Map<String, Object> discoveryResult = new HashMap<>();
-                        discoveryResult.put("address", device.getAddress());
-                        discoveryResult.put("name", device.getName());
-                        discoveryResult.put("type", device.getType());
-                        //discoveryResult.put("class", deviceClass); // @TODO . it isn't my priority for now !BluetoothClass!
-                        discoveryResult.put("isConnected", checkIsDeviceConnected(device));
-                        discoveryResult.put("bondState", device.getBondState());
-                        discoveryResult.put("rssi", deviceRSSI);
+                        try {
+                            discoveryResult.put("address", device.getAddress());
+                            discoveryResult.put("name", device.getName());
+                            discoveryResult.put("type", device.getType());
+                            //discoveryResult.put("class", deviceClass); // @TODO . it isn't my priority for now !BluetoothClass!
+                            discoveryResult.put("isConnected", checkIsDeviceConnected(device));
+                            discoveryResult.put("bondState", device.getBondState());
+                            discoveryResult.put("rssi", deviceRSSI);
+                        } catch (SecurityException e) {
+                            e.printStackTrace();
+                        }
 
                         Log.d(TAG, "Discovered " + device.getAddress());
                         if (discoverySink != null) {

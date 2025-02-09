@@ -71,7 +71,13 @@ public abstract class BluetoothConnection
     }
     /// Connects to given device by hardware address (default UUID used)
     public void connect(String address) throws IOException {
-        connect(address, DEFAULT_UUID);
+        try {
+            connect(address, DEFAULT_UUID);
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     /// Disconnects current session (ignore if not connected)

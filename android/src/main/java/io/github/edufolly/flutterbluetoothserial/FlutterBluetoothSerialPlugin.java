@@ -137,6 +137,8 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                                                 Log.d(TAG, "Trying to set passkey for pairing to " + passkeyString);
                                                 device.setPin(passkey);
                                                 broadcastResult.abortBroadcast();
+                                            } catch (SecurityException e) {
+                                                e.printStackTrace();
                                             } catch (Exception ex) {
                                                 Log.e(TAG, ex.getMessage());
                                                 ex.printStackTrace();

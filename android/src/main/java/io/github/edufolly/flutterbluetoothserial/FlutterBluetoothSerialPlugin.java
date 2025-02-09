@@ -604,7 +604,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
 
                 case "requestDisable":
                     if (bluetoothAdapter.isEnabled()) {
-                        bluetoothAdapter.disable();
+                        try {
+                            bluetoothAdapter.disable();
+                        } catch (SecurityException e) {
+                            e.printStackTrace();
+                        }
                         result.success(true);
                     } else {
                         result.success(false);

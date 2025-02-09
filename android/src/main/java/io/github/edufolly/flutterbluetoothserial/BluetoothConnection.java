@@ -37,7 +37,7 @@ public abstract class BluetoothConnection
     // @TODO . `connect` other methods than `createRfcommSocketToServiceRecord`, including hidden one raw `createRfcommSocket` (on channel).
     // @TODO ? how about turning it into factoried?
     /// Connects to given device by hardware address
-    public void connect(String address, UUID uuid) throws IOException {
+    public void connect(String address, UUID uuid) throws Exception {
         if (isConnected()) {
             throw new IOException("already connected");
         }
@@ -47,9 +47,14 @@ public abstract class BluetoothConnection
             throw new IOException("device not found");
         }
 
-        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid); // @TODO . introduce ConnectionMethod
-        if (socket == null) {
-            throw new IOException("socket connection not established");
+        BluetoothSocket socket = null;
+        try {
+            socket = device.createRfcommSocketToServiceRecord(uuid);
+        } catch (SecurityException e) {
+            Log.e(TAG, "SecurityException: Missing BLUETOOTH_CONNECT permission", e);
+            throw e;
+        } catch (IOException e) {
+            Log.e(TAG, "IOException: Failed to create RFComm socket", e);
         }
 
         // Cancel discovery, even though we didn't start it

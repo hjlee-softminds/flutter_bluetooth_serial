@@ -1012,7 +1012,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     break;
 
                 case "isDiscoverable":
-                    result.success(bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+                    try {
+                        result.success(bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case "requestDiscoverable": {
@@ -1062,6 +1066,8 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         try {
                             connection.connect(address);
                             activity.runOnUiThread(() -> result.success(id));
+                        } catch (SecurityException e) {
+                            e.printStackTrace();
                         } catch (Exception ex) {
                             activity.runOnUiThread(() -> result.error("connect_error", ex.getMessage(), exceptionToString(ex)));
                             connections.remove(id);
@@ -1084,7 +1090,12 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         break;
                     }
 
-                    BluetoothConnection connection = connections.get(id);
+                    BluetoothConnection connection = null;
+                    try {
+                        connection = connections.get(id);
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     if (connection == null) {
                         result.error("invalid_argument", "there is no connection with provided id", null);
                         break;

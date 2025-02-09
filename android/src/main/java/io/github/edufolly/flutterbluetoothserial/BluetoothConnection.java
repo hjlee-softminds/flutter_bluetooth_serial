@@ -61,6 +61,8 @@ public abstract class BluetoothConnection
 
         try {
             bluetoothAdapter.cancelDiscovery();
+        } catch (SecurityException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

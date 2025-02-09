@@ -719,7 +719,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                 }
 
                 case "getName":
-                    result.success(bluetoothAdapter.getName());
+                    try {
+                        result.success(bluetoothAdapter.getName());
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case "setName": {
@@ -735,8 +739,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         result.error("invalid_argument", "'name' argument is required to be string", null);
                         break;
                     }
-
-                    result.success(bluetoothAdapter.setName(name));
+                    try {
+                        result.success(bluetoothAdapter.setName(name));
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
 
@@ -948,8 +955,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         intent.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
                         intent.addAction(BluetoothDevice.ACTION_FOUND);
                         activeContext.registerReceiver(discoveryReceiver, intent);
-
-                        bluetoothAdapter.startDiscovery();
+                        try {
+                            bluetoothAdapter.startDiscovery();
+                        } catch (SecurityException e) {
+                            e.printStackTrace();
+                        }
 
                         result.success(null);
                     });
@@ -963,7 +973,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         // Ignore `Receiver not registered` exception
                     }
 
-                    bluetoothAdapter.cancelDiscovery();
+                    try {
+                        bluetoothAdapter.cancelDiscovery();
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
 
                     if (discoverySink != null) {
                         discoverySink.endOfStream();

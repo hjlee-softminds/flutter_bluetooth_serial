@@ -69,6 +69,8 @@ public abstract class BluetoothConnection
 
         try {
             socket.connect();
+        } catch (SecurityException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,6 +82,8 @@ public abstract class BluetoothConnection
     public void connect(String address) throws IOException {
         try {
             connect(address, DEFAULT_UUID);
+        } catch (SecurityException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             throw e;
         } catch (Exception e) {

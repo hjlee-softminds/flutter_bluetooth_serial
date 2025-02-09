@@ -960,7 +960,11 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     break;
 
                 case "isDiscovering":
-                    result.success(bluetoothAdapter.isDiscovering());
+                    try {
+                        result.success(bluetoothAdapter.isDiscovering());
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case "startDiscovery":

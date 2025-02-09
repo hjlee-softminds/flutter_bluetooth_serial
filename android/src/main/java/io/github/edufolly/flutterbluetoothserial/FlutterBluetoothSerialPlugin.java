@@ -766,8 +766,12 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         break;
                     }
 
-                    BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-                    result.success(device.getBondState());
+                    try {
+                        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
+                        result.success(device.getBondState());
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
 
@@ -789,16 +793,20 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     }
 
                     BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-                    switch (device.getBondState()) {
-                        case BluetoothDevice.BOND_BONDING:
-                            result.error("bond_error", "device already bonding", null);
-                            break methodCallDispatching;
-                        case BluetoothDevice.BOND_NONE:
-                            result.error("bond_error", "device already unbonded", null);
-                            break methodCallDispatching;
-                        default:
-                            // Proceed.
-                            break;
+                    try {
+                        switch (device.getBondState()) {
+                            case BluetoothDevice.BOND_BONDING:
+                                result.error("bond_error", "device already bonding", null);
+                                break methodCallDispatching;
+                            case BluetoothDevice.BOND_NONE:
+                                result.error("bond_error", "device already unbonded", null);
+                                break methodCallDispatching;
+                            default:
+                                // Proceed.
+                                break;
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
                     }
 
                     try {
@@ -835,16 +843,20 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     }
 
                     BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-                    switch (device.getBondState()) {
-                        case BluetoothDevice.BOND_BONDING:
-                            result.error("bond_error", "device already bonding", null);
-                            break methodCallDispatching;
-                        case BluetoothDevice.BOND_BONDED:
-                            result.error("bond_error", "device already bonded", null);
-                            break methodCallDispatching;
-                        default:
-                            // Proceed.
-                            break;
+                    try {
+                        switch (device.getBondState()) {
+                            case BluetoothDevice.BOND_BONDING:
+                                result.error("bond_error", "device already bonding", null);
+                                break methodCallDispatching;
+                            case BluetoothDevice.BOND_BONDED:
+                                result.error("bond_error", "device already bonded", null);
+                                break methodCallDispatching;
+                            default:
+                                // Proceed.
+                                break;
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
                     }
 
                     bondStateBroadcastReceiver = new BroadcastReceiver() {

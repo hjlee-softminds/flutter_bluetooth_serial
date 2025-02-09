@@ -58,7 +58,14 @@ public abstract class BluetoothConnection
         }
 
         // Cancel discovery, even though we didn't start it
-        bluetoothAdapter.cancelDiscovery();
+
+        try {
+            bluetoothAdapter.cancelDiscovery();
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             socket.connect();

@@ -51,10 +51,9 @@ public abstract class BluetoothConnection
         try {
             socket = device.createRfcommSocketToServiceRecord(uuid);
         } catch (SecurityException e) {
-            Log.e(TAG, "SecurityException: Missing BLUETOOTH_CONNECT permission", e);
             throw e;
         } catch (IOException e) {
-            Log.e(TAG, "IOException: Failed to create RFComm socket", e);
+            throw e;
         }
 
         // Cancel discovery, even though we didn't start it

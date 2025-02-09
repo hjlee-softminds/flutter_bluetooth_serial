@@ -900,8 +900,12 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     //filter.setPriority(pairingRequestReceiverPriority + 1);
                     activeContext.registerReceiver(bondStateBroadcastReceiver, filter);
 
-                    if (!device.createBond()) {
-                        result.error("bond_error", "error starting bonding process", null);
+                    try {
+                        if (!device.createBond()) {
+                            result.error("bond_error", "error starting bonding process", null);
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
                     }
                     break;
                 }

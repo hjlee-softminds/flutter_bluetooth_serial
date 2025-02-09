@@ -371,11 +371,15 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                     // Ignore `Receiver not registered` exception
                 }
 
-                bluetoothAdapter.cancelDiscovery();
+                try {
+                    bluetoothAdapter.cancelDiscovery();
 
-                if (discoverySink != null) {
-                    discoverySink.endOfStream();
-                    discoverySink = null;
+                    if (discoverySink != null) {
+                        discoverySink.endOfStream();
+                        discoverySink = null;
+                    }
+                } catch (SecurityException e) {
+                    e.printStackTrace();
                 }
             }
         };

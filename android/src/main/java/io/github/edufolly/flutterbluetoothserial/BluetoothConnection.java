@@ -52,15 +52,19 @@ public abstract class BluetoothConnection
         try {
             socket = device.createRfcommSocketToServiceRecord(uuid);
         } catch (SecurityException e) {
-            throw e;
+            e.printStackTrace();
         } catch (IOException e) {
-            throw e;
+            e.printStackTrace();
         }
 
         // Cancel discovery, even though we didn't start it
         bluetoothAdapter.cancelDiscovery();
 
-        socket.connect();
+        try {
+            socket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         connectionThread = new ConnectionThread(socket);
         connectionThread.start();

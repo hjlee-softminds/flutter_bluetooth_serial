@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+
 /// Universal Bluetooth serial connection class (for Java)
 public abstract class BluetoothConnection
 {
@@ -26,13 +27,6 @@ public abstract class BluetoothConnection
 
 
     public BluetoothConnection(BluetoothAdapter bluetoothAdapter) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12 이상
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                Log.e("BluetoothConnection", "BLUETOOTH_CONNECT permission is not granted.");
-                return null;
-            }
-        }
-
         this.bluetoothAdapter = bluetoothAdapter;
     }
 
